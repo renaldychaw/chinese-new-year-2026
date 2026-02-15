@@ -395,6 +395,7 @@ body {
     height: 340px;
     cursor: pointer;
     perspective: 1000px;
+    -webkit-perspective: 1000px;
     animation: float-angpao 3s ease-in-out infinite;
 }
 
@@ -403,8 +404,14 @@ body {
 .angpao-wrapper:nth-child(3) { animation-delay: 1s; }
 
 @keyframes float-angpao {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%, 100% { 
+        transform: translateY(0);
+        -webkit-transform: translateY(0);
+    }
+    50% { 
+        transform: translateY(-15px);
+        -webkit-transform: translateY(-15px);
+    }
 }
 
 .angpao-wrapper:hover {
@@ -416,11 +423,27 @@ body {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .angpao-wrapper.flipped .angpao-card {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+}
+
+/* Aggressive fix for iOS Chrome/Safari */
+.angpao-wrapper.flipped .angpao-front {
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.angpao-wrapper.flipped .angpao-back {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
 }
 
 .angpao-front,
@@ -429,8 +452,11 @@ body {
     height: 100%;
     position: absolute;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
     border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .angpao-front {
@@ -440,16 +466,33 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    z-index: 2;
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
 }
 
 .angpao-back {
     background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
     border: 3px solid var(--secondary-red);
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
     padding: 2rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Force hide all front card children when flipped - iOS fix */
+.angpao-wrapper.flipped .angpao-front * {
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
 .angpao-pattern {
@@ -459,6 +502,8 @@ body {
     background: 
         repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 215, 0, 0.1) 10px, rgba(255, 215, 0, 0.1) 20px),
         repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255, 215, 0, 0.05) 10px, rgba(255, 215, 0, 0.05) 20px);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .angpao-text {
@@ -468,6 +513,8 @@ body {
     color: var(--gold);
     text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
     z-index: 2;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .angpao-ribbon {
@@ -475,12 +522,15 @@ body {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     width: 60px;
     height: 60px;
     background: var(--gold);
     border-radius: 50%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.5);
     z-index: 1;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .angpao-ribbon::before,
@@ -493,10 +543,14 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .angpao-ribbon::after {
     transform: translate(-50%, -50%) rotate(90deg);
+    -webkit-transform: translate(-50%, -50%) rotate(90deg);
 }
 
 .tap-hint {
@@ -504,6 +558,7 @@ body {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     background: rgba(255, 215, 0, 0.2);
     color: var(--gold);
     padding: 0.5rem 1rem;
@@ -513,6 +568,8 @@ body {
     border: 2px solid var(--gold);
     animation: pulse-hint 2s ease-in-out infinite;
     z-index: 3;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 @keyframes pulse-hint {
