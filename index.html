@@ -10,13 +10,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Welcome Splash Screen for Music Permission -->
+    <div class="welcome-splash" id="welcomeSplash">
+        <div class="splash-content">
+            <div class="splash-lantern">🏮</div>
+            <h2 class="splash-title">Selamat Tahun Baru Imlek 2026</h2>
+            <p class="splash-subtitle">恭喜发财</p>
+            <button class="splash-button" onclick="startExperience()">
+                <span class="splash-icon">🎵</span>
+                <span>Mulai dengan Musik</span>
+            </button>
+            <p class="splash-note">Klik untuk memulai pengalaman dengan background music</p>
+        </div>
+    </div>
+
     <!-- Particles Background -->
     <div class="particles" id="particles"></div>
 
     <!-- Background Music Player -->
     <div class="music-player">
-        <button class="music-toggle playing" id="musicToggle" onclick="toggleMusic()">
-            <span class="music-icon">🎵</span>
+        <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">
+            <span class="music-icon">🔇</span>
         </button>
     </div>
     <audio id="bgMusic" loop>
@@ -129,7 +143,7 @@
                     <div class="feature-icon-wrapper">
                         <div class="feature-icon">🔥</div>
                     </div>
-                    <h3 class="feature-title">Passion</h3>
+                    <h3 class="feature-title">Gairah & Passion</h3>
                     <p class="feature-description">
                         Elemen Api membawa intensitas, antusiasme, dan keberanian untuk mengejar impian dengan penuh gairah.
                     </p>
@@ -157,7 +171,6 @@
             </div>
             <div class="footer-divider"></div>
             <p class="footer-text">Selamat Tahun Baru Imlek 2026</p>
-            <div class="footer-text">From Renaldy</div>
         </div>
     </footer>
 
