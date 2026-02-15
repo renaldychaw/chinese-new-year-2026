@@ -383,26 +383,81 @@ function createParticles() {
 // Track opened angpao
 let openedAngpaoCount = 0;
 let usedFortunes = [];
-let musicPlaying = true; // Start with music playing
+let musicPlaying = false;
 
-// Initialize music on page load
-document.addEventListener('DOMContentLoaded', () => {
+// Start experience function - called when user clicks splash button
+function startExperience() {
     const bgMusic = document.getElementById('bgMusic');
+    const welcomeSplash = document.getElementById('welcomeSplash');
     const musicToggle = document.getElementById('musicToggle');
     const musicIcon = musicToggle.querySelector('.music-icon');
     
+    // Play music with user interaction (guaranteed to work)
+    bgMusic.play().then(() => {
+        musicPlaying = true;
+        musicIcon.textContent = '🎵';
+        musicToggle.classList.add('playing');
+        
+        // Hide splash screen
+        welcomeSplash.classList.add('hidden');
+        
+        // Remove splash from DOM after animation
+        setTimeout(() => {
+            welcomeSplash.remove();
+        }, 500);
+        
+        // Create welcome fireworks
+        createWelcomeFireworks();
+    }).catch(error => {
+        console.error('Error playing music:', error);
+        // Still hide splash even if music fails
+        welcomeSplash.classList.add('hidden');
+        setTimeout(() => {
+            welcomeSplash.remove();
+        }, 500);
+    });
+}
+
+// Welcome fireworks on entry
+function createWelcomeFireworks() {
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+            const colors = ['#FFD700', '#FF0000', '#FF6347', '#FFA500', '#FF1493'];
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight * 0.6;
+            
+            for (let j = 0; j < 30; j++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = x + 'px';
+                firework.style.top = y + 'px';
+                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (Math.PI * 2 * j) / 30;
+                const velocity = 150 + Math.random() * 100;
+                const xMove = Math.cos(angle) * velocity;
+                const yMove = Math.sin(angle) * velocity;
+                
+                firework.style.setProperty('--x', xMove + 'px');
+                firework.style.setProperty('--y', yMove + 'px');
+                firework.style.animation = 'firework-explode 1.5s ease-out forwards';
+                
+                document.body.appendChild(firework);
+                
+                setTimeout(() => firework.remove(), 1500);
+            }
+        }, i * 400);
+    }
+}
+
+// Initialize music settings on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const bgMusic = document.getElementById('bgMusic');
     // Set volume to comfortable level
     bgMusic.volume = 0.3;
     
-    // Auto-play music on load
-    bgMusic.play().then(() => {
-        musicIcon.textContent = '🎵';
-        musicToggle.classList.add('playing');
-    }).catch(error => {
-        // If autoplay is blocked by browser, just show muted icon
-        console.log('Autoplay blocked:', error);
-        musicPlaying = false;
-    });
+    // Note: Music will start when user clicks the splash button
+    // This ensures compliance with browser autoplay policies
 });
 
 // Toggle background music
